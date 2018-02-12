@@ -5,6 +5,7 @@ app.use(bodyParser.json())
 const morgan = require('morgan')
 app.use(morgan('tiny'))
 const cors = require('cors')
+app.use(express.static('build'))
 
 app.use(cors())
 
