@@ -3,9 +3,10 @@ const app = express()
 const bodyParser = require('body-parser')
 app.use(bodyParser.json())
 const morgan = require('morgan')
-app.use(morgan)
-morgan('tiny')
-app.use(morgan('combined'))
+app.use(morgan('tiny'))
+const cors = require('cors')
+
+app.use(cors())
 
 let henkilot = [
   {
@@ -32,8 +33,20 @@ let henkilot = [
 ]
 
 
+
 app.get('/', (req, res) => {
   res.send('<h1>Hello World!</h1>')
+})
+
+app.get('/info', (req, res)=>{
+
+const pituus = henkilot.length
+let aika = new Date
+let teksti = '<h1>Henkiloita listassa </h1>'
+teksti += pituus
+teksti += '<h1> aika: </h1>'
+teksti += aika
+res.send(teksti)
 })
 
 app.get('/api/persons/:id',(req, res) => {
@@ -77,7 +90,7 @@ const generateId = () => {
   return(Math.ceil(Math.random()* 10000000 ))
 }
 
-const PORT = 3001
+const PORT = process.env.PORT || 3001
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)
 })
